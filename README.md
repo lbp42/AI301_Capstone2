@@ -24,19 +24,25 @@ something in a different language.
 
 ### Problem Description
 
-[In your own words, what's broken or missing?]
+The `/v1/meta` API endpoint in Cube.js is missing the `sql_table` field 
+in its response. Even when using the `?extended` query parameter, the field 
+doesn't show up, even though the similar `sql` field does.
 
 ### Expected Behavior
 
-[What should happen?]
+The `/meta` endpoint should return the `sql_table` field alongside the 
+existing `sql` field so users can see which SQL table a cube maps to.
 
 ### Current Behavior
 
-[What actually happens?]
+When you call `/v1/meta` or `/v1/meta?extended`, the response includes 
+`sql` but not `sql_table`, making it very difficult to get that info from 
+the API.
 
 ### Affected Components
 
-[Which parts of the codebase are involved?]
+`packages/cubejs-api-gateway/src/helpers/transformMetaExtended.ts` — 
+specifically the `transformCube` function around line 37.
 
 ---
 
