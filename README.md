@@ -6,7 +6,7 @@
 **Contribution Number:** [2]  
 **Student:** [Amanda Orozco]  
 **Issue:** [GitHub Issue #8711](https://github.com/cube-js/cube/issues/8711)
-**Status:** [Phase I]
+**Status:** [Phase II]
 
 ---
 
@@ -50,19 +50,27 @@ specifically the `transformCube` function around line 37.
 
 ### Environment Setup
 
-[Notes on setting up your local development environment - challenges you faced, how you solved them]
+- Cloned fork on macOS (Apple Silicon)
+- Set up SSH authentication for GitHub
+- No build required to reproduce — issue is visible by reading the source code
 
 ### Steps to Reproduce
 
-1. [Step 1]
-2. [Step 2]
-3. [Observed result]
+1. Clone the repository
+2. Open `packages/cubejs-api-gateway/src/helpers/transform-meta-extended.ts`
+3. Look at the `transformCube` function — it includes `sql` but not `sql_table`
+4. The `/v1/meta?extended` endpoint calls this function, so `sql_table` never 
+   makes it into the API response
 
 ### Reproduction Evidence
 
-- **Commit showing reproduction:** [Link to commit in your fork]
-- **Screenshots/logs:** [If applicable]
-- **My findings:** [What you discovered during reproduction]
+- **Branch link:** https://github.com/lbp42/cube/tree/fix-issue-8711
+- **My findings:** The `transformCube` function in 
+  `transform-meta-extended.ts` returns `sql` from `cubeDefinitions` but 
+  is missing `sql_table`. Adding one line — 
+  `sql_table: cubeDefinitions[cube?.name]?.sql_table` — to the return 
+  object should fix it. The test file 
+  `transform-meta-extended.test.ts` will also need to be updated.
 
 ---
 
