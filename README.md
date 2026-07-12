@@ -78,30 +78,44 @@ specifically the `transformCube` function around line 37.
 
 ### Analysis
 
-[Your analysis of the root cause - what's causing the issue?]
+The `transformCube` function in `transform-meta-extended.ts` builds the 
+object returned by the `/meta` API endpoint. It includes `sql` but never 
+adds `sql_table`, so even though the data exists in `cubeDefinitions`, 
+it never makes it into the response.
 
 ### Proposed Solution
 
-[High-level description of your fix approach]
+Add `sql_table` to the return object of `transformCube` so it gets 
+included in the API response alongside `sql`.
 
 ### Implementation Plan
 
 Using UMPIRE framework (adapted):
 
-**Understand:** [Restate the problem]
+**Understand:** The `/meta` endpoint is missing `sql_table` because 
+`transformCube` doesn't include it in its return object.
 
-**Match:** [What similar patterns/solutions exist in the codebase?]
+**Match:** The `sql` field is already handled the same way — 
+`sql: cubeDefinitions[cube?.name]?.sql` — so `sql_table` follows 
+the exact same pattern.
 
 **Plan:** [Step-by-step implementation plan]
-1. [Modify file X to do Y]
-2. [Add function Z]
-3. [Update tests]
+1. Add `sql_table: cubeDefinitions[cube?.name]?.sql_table` to the 
+   `transformCube` return object in `transform-meta-extended.ts`
+2. Update `transform-meta-extended.test.ts` to add a test case 
+   verifying `sql_table` appears in the output
+33. Add a test case to `transform-meta-extended.test.ts` that checks 
+   `sql_table` is included in the `transformCube` output when it 
+   exists in `cubeDefinitions`
+4. Add a test case verifying `sql_table` is `undefined` in the output 
+   when it is not defined in `cubeDefinitions`
 
-**Implement:** [Link to your branch/commits as you work]
+**Implement:** [[Link](https://github.com/lbp42/cube/tree/fix-issue-8711)
 
-**Review:** [Self-review checklist - does it follow the project's contribution guidelines?]
-
-**Evaluate:** [How will you verify it works?]
+**Review:** Will follow the project's contribution guidelines and 
+match the existing code style.
+**Evaluate:** Run the existing test suite to confirm nothing breaks, 
+and verify the new test case passes.
 
 ---
 
