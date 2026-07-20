@@ -123,36 +123,48 @@ and verify the new test case passes.
 
 ### Unit Tests
 
-- [ ] Test case 1: [Description]
-- [ ] Test case 2: [Description]
-- [ ] Test case 3: [Description]
+- [ ] Test case 1: `transformCube - includes sql_table when defined` — verifies 
+  that when `sql_table` exists in `cubeDefinitions`, it appears in the 
+  `transformCube` output with the correct value
+- [ ] Test case 2: `transformCube - sql_table is undefined when not defined` — 
+  verifies that when `sql_table` is not in `cubeDefinitions`, the output 
+  returns `undefined` for that field
 
 ### Integration Tests
 
-- [ ] Integration scenario 1
-- [ ] Integration scenario 2
+- [ ]Not applicable for this change — the fix is isolated to a single helper 
+  function and fully covered by unit tests
 
 ### Manual Testing
 
-[What you tested manually and results]
+- Ran the full test suite with `npm test -- --testPathPattern=transform-meta-extended`
+- All 198 tests passed across 11 test suites
+- Confirmed `transform-meta-extended.ts` maintains 97.43% code coverage
 
 ---
 
 ## Implementation Notes
 
-### Week [X] Progress
+### Week [1] Progress
 
-[What you built this week, challenges faced, decisions made]
+Located the file `transform-meta-extended.ts` after discovering the original 
+filename from the issue had been renamed. Found the `transformCube` function 
+and identified that `sql_table` was simply missing from its return object.
 
-### Week [Y] Progress
+### Week [2&3] Progress
 
-[Continue documenting as you work]
+Added `sql_table: cubeDefinitions[cube?.name]?.sql_table` to the `transformCube` 
+function. Added two unit tests following the existing test patterns. Built the 
+project using lerna and ran the full test suite to confirm all tests pass.
 
 ### Code Changes
 
-- **Files modified:** [List]
-- **Key commits:** [Links to important commits]
-- **Approach decisions:** [Why you chose certain approaches]
+- **Files modified:** - `packages/cubejs-api-gateway/src/helpers/transform-meta-extended.ts`
+  - `packages/cubejs-api-gateway/test/helpers/transform-meta-extended.test.ts`
+- **Key commits:** https://github.com/lbp42/cube/tree/fix-issue-8711
+- **Approach decisions:** Followed the exact same pattern as the existing 
+  `sql` field since `sql_table` requires no transformation — it's passed 
+  through directly unlike `sql` which uses `stringifyMemberSql`
 
 ---
 
