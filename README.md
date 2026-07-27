@@ -6,7 +6,7 @@
 **Contribution Number:** [2]  
 **Student:** [Amanda Orozco]  
 **Issue:** [GitHub Issue #8711](https://github.com/cube-js/cube/issues/8711)
-**Status:** [Phase II]
+**Status:** [Phase IV]
 
 ---
 
@@ -170,15 +170,14 @@ project using lerna and ran the full test suite to confirm all tests pass.
 
 ## Pull Request
 
-**PR Link:** [GitHub PR URL when submitted]
+**PR Link:** [[GitHub PR URL when submitted]](https://github.com/cube-js/cube/pull/11360)
 
-**PR Description:** [Draft or final PR description - much of the content above can be adapted]
+**PR Description:** The /meta and /meta?extended endpoints were missing the sql_table field in their response, even though the similar sql field was already included. This made it difficult to determine which SQL table a cube maps to via the API. This PR adds sql_table to the transformCube function's return object in transform-meta-extended.ts, following the exact same pattern already used for sql. Added two unit tests verifying the field appears when defined and is undefined when not defined. Ran the full test suite scoped to the modified file — all 198 tests passed across 11 test suites, maintaining 97.43% code coverage.
 
 **Maintainer Feedback:**
-- [Date]: [Summary of feedback received]
-- [Date]: [How you addressed it]
+- [07/26/2026]: No feedback received yet. The PR was just opened; a review was automatically requested from the code-owning team via the project's CODEOWNERS setup, and CI workflows are currently pending maintainer approval (standard practice for external/community contributors on this repo).
 
-**Status:** [Awaiting review / Iterating / Approved / Merged]
+**Status:** Awaiting review
 
 ---
 
@@ -186,20 +185,18 @@ project using lerna and ran the full test suite to confirm all tests pass.
 
 ### Technical Skills Gained
 
-[What you learned technically]
+Working through this issue helped me get more comfortable with Git commands beyond the basics — things like reconciling divergent branches, choosing between merge and rebase strategies, and understanding what actually happens during a fast-forward vs. a three-way merge. I also came away with a better sense of how files in a large codebase "talk" to each other — tracing how a small helper function like transformCube feeds into a public-facing API response, rather than looking at files in isolation.
+
 
 ### Challenges Overcome
-
-[What was hard and how you solved it]
+The issue pointed to a filename that no longer existed in the codebase — it had been renamed at some point to transform-meta-extended.ts. I brainstormed different ways to track down where the logic had actually moved to, since a direct search for the old filename wouldn't have worked. Writing the two unit tests, on the other hand, was straightforward once I found the file — I followed the existing test patterns already in place for the sql field and adapted them for sql_table.
 
 ### What I'd Do Differently Next Time
 
-[Reflection on your process]
-
+I'd sync my fork's master branch (and any feature branches) with upstream right before starting a new issue, rather than after finishing the code — that way I'd avoid the "157 commits behind" surprise altogether when I go to open the PR. I'd also capture my actual terminal test output at the time I run it, rather than reconstructing it from memory afterward, since real output is stronger evidence in a PR than a paraphrased summary.
+Also try to confirm file paths/names against the current codebase earlier, instead of assuming the issue description was still accurate."
 ---
 
 ## Resources Used
 
-- [Link to helpful documentation]
-- [Tutorial or Stack Overflow post that helped]
-- [GitHub issues or discussions that helped]
+GitHub Docs: About pull requests — https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
